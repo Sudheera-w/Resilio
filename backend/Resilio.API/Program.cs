@@ -18,6 +18,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IOtpRepository, OtpRepository>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+builder.Services.AddScoped<IVictimProfileRepository, VictimProfileRepository>();
+builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileRepository>();
 
 // DI: Services
 builder.Services.AddSingleton<IOtpGenerator, OtpGenerator>();
@@ -37,6 +39,7 @@ builder.Services.AddSingleton<ITokenHasher>(sp =>
 });
 builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 // JWT Auth
 var jwtKey = builder.Configuration["Auth:JwtKey"] ?? throw new InvalidOperationException("Auth:JwtKey missing.");
