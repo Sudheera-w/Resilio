@@ -63,12 +63,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevCors", policy =>
+        policy
+            .WithOrigins("http://localhost:5173") // Vite dev server
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+    );
+});
+
 var app = builder.Build();
+
+app.UseCors("DevCors");
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseCors("DevCors");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
