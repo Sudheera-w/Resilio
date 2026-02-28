@@ -48,3 +48,5 @@ app.MapGet("/api/test-db", async () =>
 });
 
 app.Run();
+
+// CI test comment
