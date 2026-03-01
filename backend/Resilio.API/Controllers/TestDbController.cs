@@ -5,7 +5,7 @@ using Resilio.Core.Interfaces;
 namespace Resilio.API.Controllers;
 
 [ApiController]
-[Route("api/test-db")]
+[Route("api/db/health")]
 public sealed class TestDbController : ControllerBase
 {
     private readonly IDbConnectionFactory _factory;
