@@ -90,4 +90,24 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Health check endpoint
+app.MapGet("/api/health", () => Results.Ok(new { status = "healthy", app = "Resilio" }));
+
+//database connection test
+app.MapGet("/api/test-db", async () =>
+{
+    try
+    {
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        using var connection = new Microsoft.Data.SqlClient.SqlConnection(connectionString);
+        await connection.OpenAsync();
+        return Results.Ok(new { status = "Database connected!", server = connection.DataSource });
+    }
+    catch (Exception ex)
+    {
+        return Results.Problem("Database connection failed: " + ex.Message);
+    }
+});
+
 app.Run();
