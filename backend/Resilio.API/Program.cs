@@ -69,7 +69,11 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("DevCors", policy =>
         policy
-            .WithOrigins("http://localhost:5173") // Vite dev server
+            .WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://resilio-fuczgdd3dpe5gbe3.eastasia-01.azurewebsites.net"
+            )
             .AllowAnyHeader()
             .AllowAnyMethod()
     );
