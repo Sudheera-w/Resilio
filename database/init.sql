@@ -171,3 +171,20 @@ BEGIN
     );
 END
 GO
+
+/* ============================================
+   7)create relief requests table
+============================================ */
+CREATE TABLE dbo.ReliefRequests (
+    RequestId UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+    CreatedByUserId UNIQUEIDENTIFIER NOT NULL,
+    Area NVARCHAR(255) NOT NULL,
+    Description NVARCHAR(1000) NULL,
+    Urgency NVARCHAR(50) NOT NULL, -- 'Low' | 'Medium' | 'High' | 'Critical'
+    Status NVARCHAR(50) NOT NULL DEFAULT 'Open', -- 'Open' | 'Assigned' | 'Completed'
+    CreatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+    UpdatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+    CONSTRAINT PK_ReliefRequests PRIMARY KEY (RequestId),
+    CONSTRAINT FK_ReliefRequests_Users
+        FOREIGN KEY (CreatedByUserId) REFERENCES dbo.Users(UserId)
+);
