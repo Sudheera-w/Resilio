@@ -1,0 +1,61 @@
+// Resilio.API/Services/ReliefRequestService.cs
+using Resilio.Core.DTOs;
+using Resilio.Core.Interfaces;
+
+namespace Resilio.API.Services;
+
+public sealed class ReliefRequestService : IReliefRequestService
+{
+    private readonly IReliefRequestRepository _repo;
+
+    private static readonly HashSet<string> ValidUrgencies =
+        new(StringComparer.OrdinalIgnoreCase)
+        { "Low", "Medium", "High", "Critical" };
+
+    public ReliefRequestService(IReliefRequestRepository repo) => _repo = repo;
+
+    //create a relief request
+    public async Task<ReliefRequestResponse> CreateAsync(
+        Guid userId, ReliefRequestCreateRequest req, CancellationToken ct)
+    {
+        if (string.IsNullOrWhiteSpace(req.Area))
+            throw new ArgumentException("Area is required.");
+
+        if (!ValidUrgencies.Contains(req.Urgency ?? ""))
+            throw new ArgumentException(
+                "Urgency must be Low, Medium, High, or Critical.");
+
+        var record = new ReliefRequestRecord(
+            RequestId:       Guid.NewGuid(),
+            CreatedByUserId: userId,
+            Area:            req.Area.Trim(),
+            Description:     req.Description?.Trim(),
+            Urgency:         req.Urgency!,
+            Status:          "Open",
+            CreatedAt:       DateTime.UtcNow,
+            UpdatedAt:       DateTime.UtcNow);
+
+        var created = await _repo.CreateAsync(record, ct);
+        return ToResponse(created);
+    }
+
+    // not yet implemented
+    // public Task<IReadOnlyList<ReliefRequestResponse>> GetAllAsync(
+    //     string? statusFilter, CancellationToken ct)
+    //     => throw new NotImplementedException();
+
+    // public Task<ReliefRequestResponse> UpdateAsync(
+    //     Guid requestId, ReliefRequestUpdateRequest request, CancellationToken ct)
+    //     => throw new NotImplementedException();
+
+    // public Task DeleteAsync(Guid requestId, CancellationToken ct)
+    //     => throw new NotImplementedException();
+
+    // public Task<byte[]> ExportToPdfAsync(
+    //     string? statusFilter, string? dateFrom, string? dateTo, CancellationToken ct)
+    //     => throw new NotImplementedException();
+
+    private static ReliefRequestResponse ToResponse(ReliefRequestRecord r) => new(
+        r.RequestId, r.CreatedByUserId, r.Area, r.Description,
+        r.Urgency, r.Status, r.CreatedAt, r.UpdatedAt);
+}
