@@ -21,6 +21,8 @@ builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.AddScoped<IVictimProfileRepository, VictimProfileRepository>();
 builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileRepository>();
+builder.Services.AddScoped<IReliefRequestRepository, ReliefRequestRepository>();
+builder.Services.AddScoped<IReliefRequestService, ReliefRequestService>();
 
 // DI: Services
 builder.Services.AddSingleton<IOtpGenerator, OtpGenerator>();
