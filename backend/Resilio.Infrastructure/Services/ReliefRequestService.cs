@@ -55,6 +55,22 @@ public sealed class ReliefRequestService : IReliefRequestService
         return records.Select(ToResponse).ToList();
 }
 
+    public async Task<IReadOnlyList<ReliefRequestDetailResponse>> GetAllWithUserAsync(
+        string? statusFilter, CancellationToken ct)
+    {
+        if (!string.IsNullOrWhiteSpace(statusFilter) &&
+            !ValidStatuses.Contains(statusFilter))
+            throw new ArgumentException(
+                "Status filter must be Open, Assigned, or Completed.");
+
+        var records = await _repo.GetAllWithUserAsync(statusFilter, ct);
+        return records.Select(r => new ReliefRequestDetailResponse(
+            r.RequestId, r.CreatedByUserId, r.Area, r.Description,
+            r.Urgency, r.Status, r.CreatedAt, r.UpdatedAt,
+            r.SubmittedByName, r.SubmittedByPhone, r.SubmittedByEmail
+        )).ToList();
+    }
+
     //edit
     public async Task<ReliefRequestResponse> UpdateAsync(
     Guid id, ReliefRequestUpdateRequest req, CancellationToken ct)

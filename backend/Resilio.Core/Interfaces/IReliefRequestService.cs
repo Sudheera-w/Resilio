@@ -10,12 +10,14 @@ public interface IReliefRequestService
     Task<IReadOnlyList<ReliefRequestResponse>> GetAllAsync(
         string? statusFilter, CancellationToken ct);
 
+    Task<IReadOnlyList<ReliefRequestDetailResponse>> GetAllWithUserAsync(
+        string? statusFilter, CancellationToken ct);
+
     Task<ReliefRequestResponse> UpdateAsync(
         Guid requestId, ReliefRequestUpdateRequest request, CancellationToken ct);
 
     Task DeleteAsync(Guid requestId, CancellationToken ct);
 
     Task<IReadOnlyList<ReliefRequestResponse>> GetByUserAsync(
-    Guid userId, CancellationToken ct);
-
+        Guid userId, CancellationToken ct);
 }

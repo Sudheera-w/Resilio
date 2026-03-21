@@ -128,7 +128,6 @@ public sealed class ReliefRequestRepository : IReliefRequestRepository
         UpdatedAt:       r.GetDateTime(7)
 );
 
-
 public async Task<IReadOnlyList<ReliefRequestRecord>> GetByUserIdAsync(
     Guid userId, CancellationToken ct)
 {
@@ -148,6 +147,48 @@ public async Task<IReadOnlyList<ReliefRequestRecord>> GetByUserIdAsync(
     var list = new List<ReliefRequestRecord>();
     while (await reader.ReadAsync(ct))
         list.Add(MapRow(reader));
+
+    return list;
+}
+
+public async Task<IReadOnlyList<ReliefRequestDetailRecord>> GetAllWithUserAsync(
+    string? statusFilter, CancellationToken ct)
+{
+    var sql =
+        "SELECT r.RequestId, r.CreatedByUserId, r.Area, r.Description, " +
+        "r.Urgency, r.Status, r.CreatedAt, r.UpdatedAt, " +
+        "u.FullName, u.Phone, u.Email " +
+        "FROM dbo.ReliefRequests r " +
+        "LEFT JOIN dbo.Users u ON r.CreatedByUserId = u.UserId";
+
+    if (!string.IsNullOrWhiteSpace(statusFilter))
+        sql += " WHERE r.Status = @Status";
+
+    sql += " ORDER BY r.CreatedAt DESC;";
+
+    using var conn = (SqlConnection)_factory.CreateConnection();
+    await conn.OpenAsync(ct);
+    using var cmd = new SqlCommand(sql, conn);
+
+    if (!string.IsNullOrWhiteSpace(statusFilter))
+        cmd.Parameters.AddWithValue("@Status", statusFilter);
+
+    using var reader = await cmd.ExecuteReaderAsync(ct);
+    var list = new List<ReliefRequestDetailRecord>();
+    while (await reader.ReadAsync(ct))
+        list.Add(new ReliefRequestDetailRecord(
+            RequestId:        reader.GetGuid(0),
+            CreatedByUserId:  reader.GetGuid(1),
+            Area:             reader.GetString(2),
+            Description:      reader.IsDBNull(3) ? null : reader.GetString(3),
+            Urgency:          reader.GetString(4),
+            Status:           reader.GetString(5),
+            CreatedAt:        reader.GetDateTime(6),
+            UpdatedAt:        reader.GetDateTime(7),
+            SubmittedByName:  reader.IsDBNull(8) ? null : reader.GetString(8),
+            SubmittedByPhone: reader.IsDBNull(9) ? null : reader.GetString(9),
+            SubmittedByEmail: reader.IsDBNull(10) ? null : reader.GetString(10)
+        ));
 
     return list;
 }
