@@ -13,5 +13,10 @@ export const reliefRequestsApi = {
     delete:  (id)       => http.delete(`/api/relief-requests/${id}`),
 
     getMyRequests: () => http.get('/api/relief-requests/mine'),
+
+    getAllWithUser: (status) =>
+        http.get('/api/relief-requests/details', {
+            params: status ? { status } : {},
+        }),
     
 };

@@ -11,6 +11,20 @@ public sealed record ReliefRequestRecord(
     DateTime UpdatedAt
 );
 
+public sealed record ReliefRequestDetailRecord(
+    Guid RequestId,
+    Guid CreatedByUserId,
+    string Area,
+    string? Description,
+    string Urgency,
+    string Status,
+    DateTime CreatedAt,
+    DateTime UpdatedAt,
+    string? SubmittedByName,
+    string? SubmittedByPhone,
+    string? SubmittedByEmail
+);
+
 public interface IReliefRequestRepository
 {
     Task<ReliefRequestRecord> CreateAsync(
@@ -28,5 +42,8 @@ public interface IReliefRequestRepository
     Task DeleteAsync(Guid requestId, CancellationToken ct);
 
     Task<IReadOnlyList<ReliefRequestRecord>> GetByUserIdAsync(
-    Guid userId, CancellationToken ct);
+        Guid userId, CancellationToken ct);
+
+    Task<IReadOnlyList<ReliefRequestDetailRecord>> GetAllWithUserAsync(
+        string? statusFilter, CancellationToken ct);
 }

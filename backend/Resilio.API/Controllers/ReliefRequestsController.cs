@@ -127,6 +127,29 @@ public async Task<IActionResult> GetMine(CancellationToken ct)
     var result = await _service.GetByUserAsync(userId, ct);
     return Ok(result);
 }
+
+
+    // Admin only
+    [HttpGet("details")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetAllWithUser(
+        [FromQuery] string? status, CancellationToken ct)
+    {
+        try
+        {
+            var result = await _service.GetAllWithUserAsync(status, ct);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new ProblemDetails
+            {
+                Title  = "Validation error",
+                Detail = ex.Message
+            });
+        }
+    }
+
     private Guid GetUserId()
     {
         var sub = User.FindFirstValue(ClaimTypes.NameIdentifier)

@@ -25,7 +25,7 @@ export default function AdminRequestsPage() {
 
     const load = (status) => {
         setLoading(true); setError(null);
-        reliefRequestsApi.getAll(status === 'All' ? null : status)
+        reliefRequestsApi.getAllWithUser(status === 'All' ? null : status)
             .then(r => setRequests(r.data))
             .catch(() => setError('Failed to load requests.'))
             .finally(() => setLoading(false));
@@ -57,6 +57,7 @@ export default function AdminRequestsPage() {
             setEditLoading(false);
         }
     };
+
     const handleDelete = async (id) => {
         if (!window.confirm('Are you sure you want to delete this request?')) return;
         try {
@@ -116,44 +117,87 @@ export default function AdminRequestsPage() {
                             <table style={table}>
                                 <thead>
                                     <tr>
-                                        {['Area', 'Description', 'Urgency',
-                                          'Status', 'Created', 'Actions'].map(h => (
-                                            <th key={h} style={th}>{h}</th>
-                                        ))}
+                                        <th style={{ ...th, width: 180 }}>Requester</th>
+                                        <th style={{ ...th, width: 220 }}>Request</th>
+                                        <th style={{ ...th, width: 90  }}>Urgency</th>
+                                        <th style={{ ...th, width: 100 }}>Status</th>
+                                        <th style={{ ...th, width: 90  }}>Created</th>
+                                        <th style={{ ...th, width: 120 }}>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {requests.map(r => (
                                         <tr key={r.requestId} style={tr}>
-                                            <td style={td}><b>{r.area}</b></td>
-                                            <td style={{ ...td, color: '#666', maxWidth: 200 }}>
-                                                {r.description ?? '—'}
+
+                                            {/* Requester — name + contact stacked */}
+                                            <td style={{ ...td, whiteSpace: 'normal' }}>
+                                                <div style={{ fontWeight: 600, fontSize: 14,
+                                                              color: '#1a1a2e' }}>
+                                                    {r.submittedByName ?? '—'}
+                                                </div>
+                                                <div style={{ fontSize: 12, color: '#999',
+                                                              marginTop: 2, overflow: 'hidden',
+                                                              textOverflow: 'ellipsis',
+                                                              whiteSpace: 'nowrap' }}
+                                                     title={r.submittedByPhone ?? r.submittedByEmail ?? ''}>
+                                                    {r.submittedByPhone ?? r.submittedByEmail ?? '—'}
+                                                </div>
                                             </td>
-                                            <td style={td}>{r.urgency}</td>
+
+                                            {/* Request — area + description stacked */}
+                                            <td style={{ ...td, whiteSpace: 'normal' }}>
+                                                <div style={{ fontWeight: 700, fontSize: 14,
+                                                              color: '#1a1a2e',
+                                                              wordBreak: 'break-word',
+                                                              whiteSpace: 'normal' }}>
+                                                    {r.area}
+                                                </div>
+                                                <div style={{ fontSize: 12, color: '#999',
+                                                              marginTop: 2,
+                                                              wordBreak: 'break-word',
+                                                              whiteSpace: 'normal' }}
+                                                     title={r.description ?? ''}>
+                                                    {r.description ?? 'No description'}
+                                                </div>
+                                            </td>
+
+                                            {/* Urgency */}
+                                            <td style={td}>
+                                                <span style={{ ...badge, background: '#f0f0f0',
+                                                               color: '#555' }}>
+                                                    {r.urgency}
+                                                </span>
+                                            </td>
+
+                                            {/* Status */}
                                             <td style={td}>
                                                 <span style={{ ...badge, ...COLORS[r.status] }}>
                                                     {r.status}
                                                 </span>
                                             </td>
-                                            <td style={{ ...td, color: '#999', fontSize: 12 }}>
+
+                                            {/* Created */}
+                                            <td style={{ ...td, color: '#999', fontSize: 13 }}>
                                                 {new Date(r.createdAt).toLocaleDateString()}
                                             </td>
-                                            <td style={td}>
+
+                                            {/* Actions */}
+                                            <td style={{ ...td, overflow: 'visible',
+                                                         whiteSpace: 'normal' }}>
                                                 {r.status !== 'Completed' && (
                                                     <button style={editBtn}
                                                         onClick={() => openEdit(r)}>
                                                         Edit
                                                     </button>
                                                 )}
-                                    
                                                 {r.status === 'Open' && (
                                                     <button style={delBtn}
                                                         onClick={() => handleDelete(r.requestId)}>
                                                         Delete
                                                     </button>
                                                 )}
-
                                             </td>
+
                                         </tr>
                                     ))}
                                 </tbody>
@@ -221,7 +265,7 @@ const pageWrap  = { minHeight: '100vh', background: '#f5f6fa',
                     fontFamily: "'Segoe UI', Inter, sans-serif" };
 const card      = { background: '#fff', borderRadius: 16,
                     boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
-                    padding: '36px 40px', width: '100%', maxWidth: 900 };
+                    padding: '36px 40px', width: '100%', maxWidth: 1200 };
 const headerRow = { display: 'flex', justifyContent: 'space-between',
                     alignItems: 'flex-start', gap: 16 };
 const title     = { margin: 0, fontSize: 22, fontWeight: 700,
@@ -240,12 +284,16 @@ const activeTab = { ...tabBtn, background: '#1a1a2e', color: '#fff',
 const muted     = { color: '#888', textAlign: 'center', padding: '32px 0' };
 const errorTxt  = { color: '#c0392b', fontSize: 13 };
 const emptyBox  = { textAlign: 'center', padding: '40px 0' };
-const table     = { width: '100%', borderCollapse: 'collapse', fontSize: 13 };
-const th        = { textAlign: 'left', padding: '10px 14px',
+const table     = { width: '100%', borderCollapse: 'collapse', fontSize: 14,
+                    tableLayout: 'fixed' };
+const th        = { textAlign: 'left', padding: '11px 14px',
                     background: '#f9f9f9', fontWeight: 700,
-                    borderBottom: '2px solid #f0f0f0', color: '#444' };
+                    borderBottom: '2px solid #f0f0f0', color: '#444',
+                    overflow: 'hidden' };
 const tr        = { borderBottom: '1px solid #f5f5f5' };
-const td        = { padding: '12px 14px', verticalAlign: 'top' };
+const td        = { padding: '13px 14px', verticalAlign: 'middle',
+                    overflow: 'hidden', textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap', maxWidth: 0 };
 const badge     = { fontSize: 11, fontWeight: 700, padding: '4px 12px',
                     borderRadius: 20, whiteSpace: 'nowrap' };
 const editBtn   = { padding: '5px 14px', borderRadius: 8,
@@ -272,7 +320,6 @@ const secBtn    = { padding: '10px 18px', borderRadius: 10,
                     border: '1.5px solid #e8e8e8', background: '#fff',
                     color: '#555', cursor: 'pointer', fontSize: 13,
                     fontFamily: "'Segoe UI', Inter, sans-serif" };
-//delete button
 const delBtn    = { padding: '5px 14px', borderRadius: 8,
                     border: '1px solid #fcc',
                     background: '#fff0f0', color: '#c0392b',
