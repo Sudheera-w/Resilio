@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Port=3306;Database=Resilio;Uid=root;Pwd=$Resilio@csp#Admin;
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: $Resilio@csp#Admin
+      MYSQL_DATABASE: Resilio
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
