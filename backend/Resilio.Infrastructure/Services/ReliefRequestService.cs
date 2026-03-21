@@ -83,12 +83,21 @@ public sealed class ReliefRequestService : IReliefRequestService
 
     return ToResponse(await _repo.UpdateAsync(updated, ct));
 }
-    // public Task DeleteAsync(Guid requestId, CancellationToken ct)
-    //     => throw new NotImplementedException();
 
-    // public Task<byte[]> ExportToPdfAsync(
-    //     string? statusFilter, string? dateFrom, string? dateTo, CancellationToken ct)
-    //     => throw new NotImplementedException();
+//delete Only Open requests can be deleted. Assigned or Completed requests must remain for record-keeping.
+    public async Task DeleteAsync(Guid requestId, CancellationToken ct)
+{
+    // Fetch existing record
+    var existing = await _repo.GetByIdAsync(requestId, ct)
+        ?? throw new KeyNotFoundException("Relief request not found.");
+
+    // only Open requests can be deleted
+    if (existing.Status != "Open")
+        throw new InvalidOperationException(
+            "Only Open relief requests can be deleted.");
+
+    await _repo.DeleteAsync(requestId, ct);
+}
 
     private static ReliefRequestResponse ToResponse(ReliefRequestRecord r) => new(
         r.RequestId, r.CreatedByUserId, r.Area, r.Description,

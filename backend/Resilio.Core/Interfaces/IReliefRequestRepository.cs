@@ -25,5 +25,5 @@ public interface IReliefRequestRepository
     Task<ReliefRequestRecord> UpdateAsync(
         ReliefRequestRecord record, CancellationToken ct);
 
-    // Task DeleteAsync(Guid requestId, CancellationToken ct);
+    Task DeleteAsync(Guid requestId, CancellationToken ct);
 }
