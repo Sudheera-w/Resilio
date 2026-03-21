@@ -87,6 +87,32 @@ public sealed class ReliefRequestsController : ControllerBase
     }
 }
 
+
+[HttpDelete("{id:guid}")]
+public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+{
+    try
+    {
+        await _service.DeleteAsync(id, ct);
+        return NoContent();
+    }
+    catch (KeyNotFoundException)
+    {
+        return NotFound(new ProblemDetails
+        {
+            Title = "Not found"
+        });
+    }
+    catch (InvalidOperationException ex)
+    {
+        return BadRequest(new ProblemDetails
+        {
+            Title  = "Business rule",
+            Detail = ex.Message
+        });
+    }
+}
+
     private Guid GetUserId()
     {
         var sub = User.FindFirstValue(ClaimTypes.NameIdentifier)

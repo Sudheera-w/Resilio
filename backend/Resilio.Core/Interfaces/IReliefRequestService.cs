@@ -13,9 +13,6 @@ public interface IReliefRequestService
     Task<ReliefRequestResponse> UpdateAsync(
         Guid requestId, ReliefRequestUpdateRequest request, CancellationToken ct);
 
-    // Task DeleteAsync(Guid requestId, CancellationToken ct);
+    Task DeleteAsync(Guid requestId, CancellationToken ct);
 
-    // Task<byte[]> ExportToPdfAsync(
-    //     string? statusFilter, string? dateFrom, string? dateTo,
-    //     CancellationToken ct);
 }

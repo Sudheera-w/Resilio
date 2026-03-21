@@ -104,8 +104,18 @@ public sealed class ReliefRequestRepository : IReliefRequestRepository
     return record;
 }
 
-    public Task DeleteAsync(Guid requestId, CancellationToken ct)
-        => throw new NotImplementedException();
+    public async Task DeleteAsync(Guid requestId, CancellationToken ct)
+{
+    const string sql =
+        "DELETE FROM dbo.ReliefRequests WHERE RequestId = @Id;";
+
+    using var conn = (SqlConnection)_factory.CreateConnection();
+    await conn.OpenAsync(ct);
+    using var cmd = new SqlCommand(sql, conn);
+    cmd.Parameters.AddWithValue("@Id", requestId);
+
+    await cmd.ExecuteNonQueryAsync(ct);
+}
 
     private static ReliefRequestRecord MapRow(SqlDataReader r) => new(
         RequestId:       r.GetGuid(0),
