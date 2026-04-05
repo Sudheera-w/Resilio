@@ -166,6 +166,25 @@ Frontend runs on `http://localhost:5173` by default when using Vite dev server.
 
 ## Running Tests
 
+## Running Database Migrations
+
+Migration scripts are located in `/database/migrations/` and follow the versioned naming convention:
+V001__description.sql
+V002__description.sql
+V003__description.sql
+
+### Apply migrations manually
+
+Connect to the database using Azure Data Studio or any SQL client, then run scripts **in version order**:
+
+| Version | File | Description |
+|---|---|---|
+| V001 | init.sql | Initial schema — Users, ReliefRequests tables |
+| V003 | V003__create_resources_table.sql | Resources and ResourceAllocations tables |
+
+> ⚠️ Always run migrations in order. Never skip a version.
+> ⚠️ For production, run against Azure SQL using the connection string from Azure App Service configuration.
+
 ### Unit tests
 
 ```bash
