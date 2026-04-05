@@ -6,8 +6,11 @@ import VictimDashboard from "./pages/VictimDashboard";
 import VolunteerDashboard from "./pages/VolunteerDashboard";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import NewRequestPage from './pages/victim/NewRequestPage';
-import MyRequestsPage    from './pages/victim/MyRequestsPage';
+import MyRequestsPage from './pages/victim/MyRequestsPage';
 import AdminRequestsPage from './pages/admin/AdminRequestsPage';
+
+// ✅ Import
+import AdminResourcesPage from './pages/admin/AdminResourcesPage';
 
 function App() {
   return (
@@ -16,10 +19,36 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth/start" element={<OtpStartPage />} />
         <Route path="/auth/verify" element={<OtpVerifyPage />} />
-        <Route path='/victim/new-request'element={<ProtectedRoute><NewRequestPage /></ProtectedRoute>} />
-        <Route path='/victim/my-requests'element={<ProtectedRoute><MyRequestsPage /></ProtectedRoute>} />
-        <Route path='/admin/requests'element={<ProtectedRoute><AdminRequestsPage /></ProtectedRoute>} />
-        
+
+        <Route
+          path='/victim/new-request'
+          element={
+            <ProtectedRoute>
+              <NewRequestPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/victim/my-requests'
+          element={
+            <ProtectedRoute>
+              <MyRequestsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path='/admin/requests'
+          element={
+            <ProtectedRoute>
+              <AdminRequestsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ✅ TEST ROUTE (no ProtectedRoute) */}
+        <Route path='/admin/resources' element={<AdminResourcesPage />} />
 
         <Route
           path="/victim"
