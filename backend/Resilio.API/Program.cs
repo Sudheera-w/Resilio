@@ -23,6 +23,7 @@ builder.Services.AddScoped<IVictimProfileRepository, VictimProfileRepository>();
 builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileRepository>();
 builder.Services.AddScoped<IReliefRequestRepository, ReliefRequestRepository>();
 builder.Services.AddScoped<IReliefRequestService, ReliefRequestService>();
+builder.Services.AddScoped<IResourceRepository, ResourceRepository>(); // ← YOUR NEW LINE
 
 // DI: Services
 builder.Services.AddSingleton<IOtpGenerator, OtpGenerator>();
@@ -30,7 +31,8 @@ builder.Services.AddSingleton<IRefreshTokenGenerator, RefreshTokenGenerator>();
 builder.Services.AddSingleton<IOtpHasher>(sp =>
 {
     var cfg = sp.GetRequiredService<IConfiguration>();
-    var secret = cfg["Otp:HmacSecret"] ?? throw new InvalidOperationException("Otp:HmacSecret missing.");
+    var secret = cfg["Otp:HmacSecret"] 
+        ?? throw new InvalidOperationException("Otp:HmacSecret missing.");
     return new OtpHasher(secret);
 });
 builder.Services.AddSingleton<ITokenHasher>(sp =>
@@ -46,8 +48,9 @@ builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IEmailSender, GmailEmailSender>();
 
 // JWT Auth
-var jwtKey = builder.Configuration["Auth:JwtKey"] ?? throw new InvalidOperationException("Auth:JwtKey missing.");
-var issuer = builder.Configuration["Auth:JwtIssuer"] ?? "Resilio";
+var jwtKey = builder.Configuration["Auth:JwtKey"] 
+    ?? throw new InvalidOperationException("Auth:JwtKey missing.");
+var issuer   = builder.Configuration["Auth:JwtIssuer"]   ?? "Resilio";
 var audience = builder.Configuration["Auth:JwtAudience"] ?? "ResilioClient";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -55,13 +58,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidIssuer = issuer,
-            ValidateAudience = true,
-            ValidAudience = audience,
+            ValidateIssuer           = true,
+            ValidIssuer              = issuer,
+            ValidateAudience         = true,
+            ValidAudience            = audience,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-            ValidateLifetime = true
+            IssuerSigningKey         = new SymmetricSecurityKey(
+                                           Encoding.UTF8.GetBytes(jwtKey)),
+            ValidateLifetime         = true
         };
     });
 
@@ -100,15 +104,20 @@ app.MapControllers();
 // Health check endpoint
 app.MapGet("/api/health", () => Results.Ok(new { status = "healthy", app = "Resilio" }));
 
-//database connection test
+// Database connection test
 app.MapGet("/api/test-db", async () =>
 {
     try
     {
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-        using var connection = new Microsoft.Data.SqlClient.SqlConnection(connectionString);
+        var connectionString = builder.Configuration
+            .GetConnectionString("DefaultConnection");
+        using var connection = new Microsoft.Data.SqlClient
+            .SqlConnection(connectionString);
         await connection.OpenAsync();
-        return Results.Ok(new { status = "Database connected!", server = connection.DataSource });
+        return Results.Ok(new { 
+            status = "Database connected!", 
+            server = connection.DataSource 
+        });
     }
     catch (Exception ex)
     {
