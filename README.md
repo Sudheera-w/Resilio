@@ -1,7 +1,8 @@
 # Resilio — Disaster Relief Resource Management System
 
-![CI - Backend](https://github.com/Sudheera-w/Resilio/actions/workflows/ci-backend.yml/badge.svg)
-![CI - Frontend](https://github.com/Sudheera-w/Resilio/actions/workflows/ci-frontend.yml/badge.svg)
+[![CI - Backend](https://github.com/nesanka360/Resilio/actions/workflows/ci-backend.yml/badge.svg)](https://github.com/nesanka360/Resilio/actions/workflows/ci-backend.yml)
+[![CI - Frontend](https://github.com/nesanka360/Resilio/actions/workflows/ci-frontend.yml/badge.svg)](https://github.com/nesanka360/Resilio/actions/workflows/ci-frontend.yml)
+[![CD - Azure](https://github.com/nesanka360/Resilio/actions/workflows/cd-azure.yml/badge.svg?branch=feature/nesanka/sprint3-devops)](https://github.com/nesanka360/Resilio/actions/workflows/cd-azure.yml)
 
 A full-stack web application for managing disaster relief resources, volunteers, and relief requests. 
 
