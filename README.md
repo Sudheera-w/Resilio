@@ -25,11 +25,19 @@ A full-stack web application for managing disaster relief resources, volunteers,
 
 ## Live URLs
 
-| Environment | URL |
-|---|---|
-| Backend API (Production) | https://resilio-fuczgdd3dpe5gbe3.eastasia-01.azurewebsites.net |
-| Swagger UI | https://resilio-fuczgdd3dpe5gbe3.eastasia-01.azurewebsites.net/swagger |
-| Health Check | https://resilio-fuczgdd3dpe5gbe3.eastasia-01.azurewebsites.net/api/health |
+| Environment | Service | URL |
+|---|---|---|
+| Production | Frontend | https://resilio-frontend.azurewebsites.net |
+| Production | Backend API | https://resilio-backend.azurewebsites.net |
+| Production | Swagger UI | https://resilio-backend.azurewebsites.net/swagger |
+| Production | Health Check | https://resilio-backend.azurewebsites.net/api/health |
+| Staging | Backend API | https://resilio-backend-staging.azurewebsites.net |
+| Staging | Health Check | https://resilio-backend-staging.azurewebsites.net/api/health |
+
+> ⚠️ Note: Staging frontend is not separately deployed.
+> Only backend staging is available for API-level testing.
+> Azure deployment slots require a Standard plan — staging is
+> implemented as a separate App Service due to free tier limitations.
 
 ---
 
