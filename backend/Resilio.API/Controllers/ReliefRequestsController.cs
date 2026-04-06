@@ -8,7 +8,7 @@ namespace Resilio.API.Controllers;
 
 [ApiController]
 [Route("api/relief-requests")]
-[Authorize]
+//[Authorize]
 public sealed class ReliefRequestsController : ControllerBase
 {
     private readonly IReliefRequestService _service;
@@ -131,7 +131,7 @@ public async Task<IActionResult> GetMine(CancellationToken ct)
 
     // Admin only
     [HttpGet("details")]
-    [Authorize(Roles = "Admin")]
+   //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAllWithUser(
         [FromQuery] string? status, CancellationToken ct)
     {

@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,3 +27,15 @@ jobs:
       - name: Build frontend
         run: npm run build
         working-directory: frontend
+        env:
+          VITE_API_BASE_URL: https://resilio-backend.azurewebsites.net
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/dist/
+
+      - name: Notify on failure
+        if: failure()
+        run: echo "::error::CI - Frontend build failed. Check build logs."

@@ -3,11 +3,11 @@
 ============================================ */
 IF DB_ID('resilio-db') IS NULL
 BEGIN
-    CREATE DATABASE resilio-db;
+    CREATE DATABASE [resilio-db];
 END
 GO
 
-USE resilio-db;
+USE [resilio-db];
 GO
 
 
@@ -175,16 +175,64 @@ GO
 /* ============================================
    7)create relief requests table
 ============================================ */
-CREATE TABLE dbo.ReliefRequests (
-    RequestId UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
-    CreatedByUserId UNIQUEIDENTIFIER NOT NULL,
-    Area NVARCHAR(255) NOT NULL,
-    Description NVARCHAR(1000) NULL,
-    Urgency NVARCHAR(50) NOT NULL, -- 'Low' | 'Medium' | 'High' | 'Critical'
-    Status NVARCHAR(50) NOT NULL DEFAULT 'Open', -- 'Open' | 'Assigned' | 'Completed'
-    CreatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
-    UpdatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
-    CONSTRAINT PK_ReliefRequests PRIMARY KEY (RequestId),
-    CONSTRAINT FK_ReliefRequests_Users
-        FOREIGN KEY (CreatedByUserId) REFERENCES dbo.Users(UserId)
-);
+IF OBJECT_ID('dbo.ReliefRequests', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.ReliefRequests (
+        RequestId UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+        CreatedByUserId UNIQUEIDENTIFIER NOT NULL,
+        Area NVARCHAR(255) NOT NULL,
+        Description NVARCHAR(1000) NULL,
+        Urgency NVARCHAR(50) NOT NULL, -- 'Low' | 'Medium' | 'High' | 'Critical'
+        Status NVARCHAR(50) NOT NULL DEFAULT 'Open', -- 'Open' | 'Assigned' | 'Completed'
+        CreatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+        UpdatedAt DATETIME2 NOT NULL DEFAULT SYSDATETIME(),
+        CONSTRAINT PK_ReliefRequests PRIMARY KEY (RequestId),
+        CONSTRAINT FK_ReliefRequests_Users
+            FOREIGN KEY (CreatedByUserId) REFERENCES dbo.Users(UserId)
+    );
+END
+GO
+
+/* ============================================
+   8) RESOURCES TABLE
+  
+============================================ */
+IF OBJECT_ID('dbo.Resources', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.Resources (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        Name NVARCHAR(100) NOT NULL,
+        Category NVARCHAR(50) NULL,
+        Quantity INT NOT NULL DEFAULT 0,
+        AllocationStatus NVARCHAR(20) NOT NULL DEFAULT 'NotAllocated',
+        AllocatedRequestId UNIQUEIDENTIFIER NULL,
+        CreatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        UpdatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        CONSTRAINT FK_Resources_ReliefRequests
+            FOREIGN KEY (AllocatedRequestId)
+            REFERENCES dbo.ReliefRequests(RequestId)
+    );
+END
+GO
+
+/* ============================================
+   9) RESOURCE ALLOCATIONS TABLE
+  
+============================================ */
+IF OBJECT_ID('dbo.ResourceAllocations', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.ResourceAllocations (
+        Id INT IDENTITY(1,1) PRIMARY KEY,
+        ResourceId INT NOT NULL,
+        ReliefRequestId UNIQUEIDENTIFIER NOT NULL,
+        AllocatedQuantity INT NOT NULL,
+        AllocatedAt DATETIME2 NOT NULL DEFAULT SYSUTCDATETIME(),
+        CONSTRAINT FK_ResourceAllocations_Resources
+            FOREIGN KEY (ResourceId)
+            REFERENCES dbo.Resources(Id),
+        CONSTRAINT FK_ResourceAllocations_ReliefRequests
+            FOREIGN KEY (ReliefRequestId)
+            REFERENCES dbo.ReliefRequests(RequestId)
+    );
+END
+GO

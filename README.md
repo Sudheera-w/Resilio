@@ -1,7 +1,8 @@
 # Resilio — Disaster Relief Resource Management System
 
-![CI - Backend](https://github.com/Sudheera-w/Resilio/actions/workflows/ci-backend.yml/badge.svg)
-![CI - Frontend](https://github.com/Sudheera-w/Resilio/actions/workflows/ci-frontend.yml/badge.svg)
+[![CI - Backend](https://github.com/nesanka360/Resilio/actions/workflows/ci-backend.yml/badge.svg)](https://github.com/nesanka360/Resilio/actions/workflows/ci-backend.yml)
+[![CI - Frontend](https://github.com/nesanka360/Resilio/actions/workflows/ci-frontend.yml/badge.svg)](https://github.com/nesanka360/Resilio/actions/workflows/ci-frontend.yml)
+[![CD - Azure](https://github.com/nesanka360/Resilio/actions/workflows/cd-azure.yml/badge.svg?branch=feature/nesanka/sprint3-devops)](https://github.com/nesanka360/Resilio/actions/workflows/cd-azure.yml)
 
 A full-stack web application for managing disaster relief resources, volunteers, and relief requests. 
 
@@ -25,11 +26,19 @@ A full-stack web application for managing disaster relief resources, volunteers,
 
 ## Live URLs
 
-| Environment | URL |
-|---|---|
-| Backend API (Production) | https://resilio-fuczgdd3dpe5gbe3.eastasia-01.azurewebsites.net |
-| Swagger UI | https://resilio-fuczgdd3dpe5gbe3.eastasia-01.azurewebsites.net/swagger |
-| Health Check | https://resilio-fuczgdd3dpe5gbe3.eastasia-01.azurewebsites.net/api/health |
+| Environment | Service | URL |
+|---|---|---|
+| Production | Frontend | https://resilio-frontend.azurewebsites.net |
+| Production | Backend API | https://resilio-backend.azurewebsites.net |
+| Production | Swagger UI | https://resilio-backend.azurewebsites.net/swagger |
+| Production | Health Check | https://resilio-backend.azurewebsites.net/api/health |
+| Staging | Backend API | https://resilio-backend-staging.azurewebsites.net |
+| Staging | Health Check | https://resilio-backend-staging.azurewebsites.net/api/health |
+
+> ⚠️ Note: Staging frontend is not separately deployed.
+> Only backend staging is available for API-level testing.
+> Azure deployment slots require a Standard plan — staging is
+> implemented as a separate App Service due to free tier limitations.
 
 ---
 
@@ -165,6 +174,25 @@ Frontend runs on `http://localhost:5173` by default when using Vite dev server.
 ---
 
 ## Running Tests
+
+## Running Database Migrations
+
+Migration scripts are located in `/database/migrations/` and follow the versioned naming convention:
+V001__description.sql
+V002__description.sql
+V003__description.sql
+
+### Apply migrations manually
+
+Connect to the database using Azure Data Studio or any SQL client, then run scripts **in version order**:
+
+| Version | File | Description |
+|---|---|---|
+| V001 | init.sql | Initial schema — Users, ReliefRequests tables |
+| V003 | V003__create_resources_table.sql | Resources and ResourceAllocations tables |
+
+> ⚠️ Always run migrations in order. Never skip a version.
+> ⚠️ For production, run against Azure SQL using the connection string from Azure App Service configuration.
 
 ### Unit tests
 
