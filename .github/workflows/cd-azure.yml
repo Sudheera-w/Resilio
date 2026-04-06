@@ -21,11 +21,10 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore backend
+        run: dotnet restore Resilio.sln
 
       - name: Build & Publish
-        run: dotnet publish Resilio.API/Resilio.API.csproj -c Release -o ${{ github.workspace }}/publish
-        working-directory: backend
+        run: dotnet publish backend/Resilio.API/Resilio.API.csproj -c Release -o ${{ github.workspace }}/publish
 
       - name: Deploy Backend to Staging
         uses: azure/webapps-deploy@v3
@@ -47,7 +46,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore backend
+        run: dotnet restore Resilio.sln
 
       - name: Build & Publish
         run: dotnet publish backend/Resilio.API/Resilio.API.csproj -c Release -o ${{ github.workspace }}/publish
