@@ -28,15 +28,14 @@ A full-stack web application for managing disaster relief resources, volunteers,
 
 | Environment | Service | URL |
 |---|---|---|
-| Production | Frontend | https://resilio-frontend.azurewebsites.net |
-| Production | Backend API | https://resilio-backend.azurewebsites.net |
-| Production | Swagger UI | https://resilio-backend.azurewebsites.net/swagger |
-| Production | Health Check | https://resilio-backend.azurewebsites.net/api/health |
-| Staging | Backend API | https://resilio-backend-staging.azurewebsites.net |
-| Staging | Health Check | https://resilio-backend-staging.azurewebsites.net/api/health |
+| Production | Frontend | https://resilio-frontend-gpghg8ezfpgtdvds.eastasia-01.azurewebsites.net |
+| Production | Backend API | https://resiliodrrcs-backend-hxc7gxbwbdcjbhdy.eastasia-01.azurewebsites.net |
+| Production | Swagger UI | https://resiliodrrcs-backend-hxc7gxbwbdcjbhdy.eastasia-01.azurewebsites.net/swagger |
+| Production | Health Check | https://resiliodrrcs-backend-hxc7gxbwbdcjbhdy.eastasia-01.azurewebsites.net/api/health |
+| Staging | Backend API | https://resilio-backend-staging-a3edfwg9cjgzg2cd.eastasia-01.azurewebsites.net |
+| Staging | Health Check | https://resilio-backend-staging-a3edfwg9cjgzg2cd.eastasia-01.azurewebsites.net/api/health |
 
 > ⚠️ Note: Staging frontend is not separately deployed.
-> Only backend staging is available for API-level testing.
 > Azure deployment slots require a Standard plan — staging is
 > implemented as a separate App Service due to free tier limitations.
 
