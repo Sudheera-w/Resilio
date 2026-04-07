@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppHeader from '../../components/AppHeader/AppHeader';
 import { resourcesApi } from '../../api/resourcesApi';
+import { reliefRequestsApi } from '../../api/reliefRequestsApi';
 
 const ALLOCATION_COLORS = {
     NotAllocated: { bg: '#e8f5e9', color: '#2e7d32' },
@@ -15,6 +16,7 @@ export default function AdminResourcesPage() {
     const nav = useNavigate();
 
     const [resources,      setResources]      = useState([]);
+    const [reliefRequests, setReliefRequests] = useState([]);  // ← NEW
     const [loading,        setLoading]        = useState(true);
     const [error,          setError]          = useState(null);
 
@@ -39,9 +41,15 @@ export default function AdminResourcesPage() {
     // ── Load ──────────────────────────────────────────────────────────
     const load = () => {
         setLoading(true); setError(null);
-        resourcesApi.getAll()
-            .then(r => setResources(r.data))
-            .catch(() => setError('Failed to load resources.'))
+        Promise.all([
+            resourcesApi.getAll(),
+            reliefRequestsApi.getAll('Open'),   // ← fetch only Open requests
+        ])
+            .then(([resRes, reqRes]) => {
+                setResources(resRes.data);
+                setReliefRequests(reqRes.data);
+            })
+            .catch(() => setError('Failed to load data.'))
             .finally(() => setLoading(false));
     };
 
@@ -121,13 +129,13 @@ export default function AdminResourcesPage() {
     };
 
     const handleAllocate = async () => {
-        if (!allocForm.reliefRequestId.trim()) {
-            setAllocErr('Relief Request ID is required.'); return;
+        if (!allocForm.reliefRequestId) {
+            setAllocErr('Please select a Relief Request.'); return;
         }
         setAllocLoading(true); setAllocErr(null);
         try {
             await resourcesApi.allocate(allocating.id, {
-                reliefRequestId:   allocForm.reliefRequestId.trim(),
+                reliefRequestId:   allocForm.reliefRequestId,
                 allocatedQuantity: Number(allocForm.allocatedQuantity),
             });
             setAllocating(null);
@@ -244,32 +252,24 @@ export default function AdminResourcesPage() {
                                                          whiteSpace: 'normal' }}>
                                                 <div style={{ display: 'flex',
                                                               gap: 6, flexWrap: 'wrap' }}>
-
-                                                    {/* Edit — always show */}
                                                     {r.allocationStatus === 'NotAllocated' && (
                                                         <button style={editBtn}
                                                             onClick={() => openEdit(r)}>
                                                             Edit
                                                         </button>
                                                     )}
-
-                                                    {/* Allocate — only if NotAllocated */}
                                                     {r.allocationStatus === 'NotAllocated' && (
                                                         <button style={allocBtn}
                                                             onClick={() => openAllocate(r)}>
                                                             Allocate
                                                         </button>
                                                     )}
-
-                                                    {/* Release — only if Allocated */}
                                                     {r.allocationStatus === 'Allocated' && (
                                                         <button style={releaseBtn}
                                                             onClick={() => handleRelease(r.id)}>
                                                             Release
                                                         </button>
                                                     )}
-
-                                                    {/* Delete — only if not allocated */}
                                                     {r.allocationStatus !== 'Allocated' && (
                                                         <button style={delBtn}
                                                             onClick={() => handleDelete(r.id)}>
@@ -398,7 +398,7 @@ export default function AdminResourcesPage() {
                 </div>
             )}
 
-            {/* Allocate Modal */}
+            {/* Allocate Modal — NOW WITH DROPDOWN ✅ */}
             {allocating && (
                 <div style={overlay}>
                     <div style={modal}>
@@ -409,14 +409,22 @@ export default function AdminResourcesPage() {
                             Available quantity: <strong>{allocating.quantity}</strong>
                         </p>
 
-                        <label style={lbl}>Relief Request ID *</label>
-                        <input
-                            placeholder="Paste the Request GUID here"
+                        <label style={lbl}>Select Relief Request *</label>
+                        <select
                             value={allocForm.reliefRequestId}
                             onChange={e => setAllocForm(p => ({
                                 ...p, reliefRequestId: e.target.value }))}
-                            style={inp}
-                        />
+                            style={inp}>
+                            <option value="">— Select an Open request —</option>
+                            {reliefRequests.length === 0 && (
+                                <option disabled>No open requests available</option>
+                            )}
+                            {reliefRequests.map(req => (
+                                <option key={req.requestId} value={req.requestId}>
+                                    {req.area} — {req.urgency} urgency
+                                </option>
+                            ))}
+                        </select>
 
                         <label style={lbl}>Quantity to Allocate</label>
                         <input
