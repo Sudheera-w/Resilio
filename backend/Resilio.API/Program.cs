@@ -71,30 +71,28 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? Array.Empty<string>();
+if (allowedOrigins.Length == 0)
+    throw new InvalidOperationException("Configure Cors:AllowedOrigins (see appsettings or Azure App Settings).");
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("DevCors", policy =>
+    options.AddPolicy("ApiCors", policy =>
         policy
-            .WithOrigins(
-                "http://localhost:5173",
-                "http://localhost:3000",
-                "https://resilio-fuczgdd3dpe5gbe3.eastasia-01.azurewebsites.net"
-            )
+            .WithOrigins(allowedOrigins)
             .AllowAnyHeader()
-            .AllowAnyMethod()
-    );
+            .AllowAnyMethod());
 });
 
 var app = builder.Build();
-
-app.UseCors("DevCors");
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.UseCors("DevCors");
+app.UseCors("ApiCors");
 
 app.UseAuthentication();
 app.UseAuthorization();
