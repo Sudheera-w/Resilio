@@ -86,7 +86,7 @@ jobs:
         run: npm run build
         working-directory: frontend
         env:
-          VITE_API_BASE_URL: https://ResilioDRRCS-Backend.azurewebsites.net
+          VITE_API_BASE_URL: https://resiliodrrcs-backend-hxc7gxbwbdcjbhdy.eastasia-01.azurewebsites.net
 
       - name: Create static server
         working-directory: frontend
