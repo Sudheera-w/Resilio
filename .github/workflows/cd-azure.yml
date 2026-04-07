@@ -20,11 +20,14 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Debug - find sln
+        run: find . -name "*.sln" 2>/dev/null
+
       - name: Restore dependencies
-        run: dotnet restore Resilio.sln
+        run: dotnet restore ${{ github.workspace }}/Resilio.sln
 
       - name: Build & Publish
-        run: dotnet publish backend/Resilio.API/Resilio.API.csproj -c Release -o ${{ github.workspace }}/publish
+        run: dotnet publish ${{ github.workspace }}/backend/Resilio.API/Resilio.API.csproj -c Release -o ${{ github.workspace }}/publish
 
       - name: Deploy Backend to Staging
         uses: azure/webapps-deploy@v3
@@ -45,11 +48,14 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Debug - find sln
+        run: find . -name "*.sln" 2>/dev/null
+
       - name: Restore dependencies
-        run: dotnet restore Resilio.sln
+        run: dotnet restore ${{ github.workspace }}/Resilio.sln
 
       - name: Build & Publish
-        run: dotnet publish backend/Resilio.API/Resilio.API.csproj -c Release -o ${{ github.workspace }}/publish
+        run: dotnet publish ${{ github.workspace }}/backend/Resilio.API/Resilio.API.csproj -c Release -o ${{ github.workspace }}/publish
 
       - name: Deploy Backend to Production
         uses: azure/webapps-deploy@v3
@@ -80,7 +86,7 @@ jobs:
         run: npm run build
         working-directory: frontend
         env:
-          VITE_API_BASE_URL: https://resilio-backend.azurewebsites.net
+          VITE_API_BASE_URL: https://ResilioDRRCS-Backend.azurewebsites.net
 
       - name: Create static server
         working-directory: frontend
