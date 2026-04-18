@@ -1,0 +1,316 @@
+/* =========================
+   GLOBAL PAGE STYLING
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.landingPage {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f4f4f4;
+  font-family: 'Times New Roman', Times, serif;
+  color: #111;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+.heroSection {
+  width: 100%;
+  min-height: 600px;
+  background-position: center 60;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 90px;
+}
+
+/* Overlay for dark gradient effect */
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      rgba(5, 28, 66, 0.92) 0%,
+      rgba(9, 44, 88, 0.82) 28%,
+      rgba(16, 52, 85, 0.45) 52%,
+      rgba(0, 0, 0, 0.12) 100%);
+}
+
+/* Hero text content */
+.heroContent {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+}
+
+.heroTitle {
+  font-size: 76px;
+  line-height: 1.05;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 22px;
+}
+
+.heroSubtitle {
+  font-size: 25px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #f2f2f2;
+  max-width: 760px;
+}
+
+/* =========================
+   CARDS SECTION
+========================= */
+.cardsSection {
+  position: relative;
+  margin-top: -80px;
+  /* Pull cards up over hero section */
+  z-index: 5;
+  padding: 0 40px 40px;
+}
+
+.cardsWrapper {
+  max-width: 1240px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 28px;
+  padding: 32px 34px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* Individual card */
+.actionCard {
+  background-color: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.actionCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.16);
+}
+
+/* Top image area */
+.cardImageArea {
+  width: 100%;
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.cardTopImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Card content area */
+.cardContent {
+  background-color: #ffffff;
+  padding: 20px 22px 22px;
+}
+
+.cardTitle {
+  font-size: 32px;
+  font-weight: 800;
+  color: #111111;
+  margin-bottom: 8px;
+}
+
+.cardDescription {
+  font-size: 18px;
+  color: #2c2c2c;
+  margin-bottom: 22px;
+  line-height: 1.4;
+}
+
+/* Reusable button style */
+.cardButton {
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 28px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.2s ease;
+}
+
+.cardButton:hover {
+  opacity: 0.92;
+}
+
+.cardButton:active {
+  transform: scale(0.98);
+}
+
+/* =========================
+   COLOR THEMES FOR CARDS
+========================= */
+
+/* Red help card */
+.redCard {
+  background: linear-gradient(135deg, #d92121, #ef3b2d);
+}
+
+/* Green volunteer card */
+.greenCard {
+  background: linear-gradient(135deg, #4aa74b, #65bb55);
+}
+
+/* Blue donate card */
+.blueCard {
+  background: linear-gradient(135deg, #1370c9, #2f8be8);
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+/* Large tablets */
+@media (max-width: 1200px) {
+  .heroTitle {
+    font-size: 62px;
+  }
+
+  .heroSubtitle {
+    font-size: 22px;
+  }
+
+  .cardsWrapper {
+    grid-template-columns: 1fr;
+    max-width: 760px;
+  }
+
+  .cardTitle {
+    font-size: 30px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+  .heroSection {
+    min-height: 500px;
+    padding: 0 40px;
+  }
+
+  .heroTitle {
+    font-size: 52px;
+  }
+
+  .heroSubtitle {
+    font-size: 20px;
+  }
+
+  .cardsSection {
+    margin-top: -60px;
+    padding: 0 20px 30px;
+  }
+
+  .cardsWrapper {
+    padding: 24px;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbarCenter {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .navbarRight {
+    width: 100%;
+  }
+
+  .signInBtn {
+    width: 100%;
+  }
+
+  .heroSection {
+    padding: 0 24px;
+    min-height: 430px;
+  }
+
+  .heroTitle {
+    font-size: 40px;
+  }
+
+  .heroSubtitle {
+    font-size: 18px;
+  }
+
+  .cardsWrapper {
+    border-radius: 20px;
+    padding: 18px;
+    gap: 20px;
+  }
+
+  .cardImageArea {
+    height: 165px;
+  }
+
+  .cardTitle {
+    font-size: 28px;
+  }
+
+  .cardDescription {
+    font-size: 17px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .brandName {
+    font-size: 24px;
+  }
+
+  .logoImage {
+    width: 48px;
+    height: 48px;
+  }
+
+  .heroTitle {
+    font-size: 34px;
+  }
+
+  .heroSubtitle {
+    font-size: 16px;
+  }
+
+  .navLink {
+    font-size: 16px;
+  }
+
+  .cardTitle {
+    font-size: 24px;
+  }
+
+  .cardDescription {
+    font-size: 16px;
+  }
+
+  .cardButton {
+    font-size: 16px;
+    height: 48px;
+  }
+}
