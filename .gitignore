@@ -1,52 +1,82 @@
-# Node
+# -----------------------------
+# Node / React
+# -----------------------------
 node_modules/
 frontend/node_modules/
 
-# Build output
 dist/
 frontend/dist/
 
-# Environment files (may contain secrets)
+# Environment files
 .env
-.env.local
-.env.staging
-.env.production
+.env.*
 frontend/.env
-frontend/.env.local
-frontend/.env.staging
-frontend/.env.production
+frontend/.env.*
 
-# .NET
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# -----------------------------
+# .NET / C#
+# -----------------------------
 bin/
 obj/
+**/bin/
+**/obj/
+
 *.user
 *.suo
 *.dbmdl
 
-# SQLite database files (local dev only — Azure SQL used in production)
+# Compiled binaries
+*.dll
+*.exe
+*.pdb
+
+# Runtime/build metadata
+*.deps.json
+*.runtimeconfig.json
+
+# Packages / archives
+*.zip
+*.nupkg
+
+# -----------------------------
+# Databases
+# -----------------------------
 *.db
 *.db-shm
 *.db-wal
 
-# Test results and coverage
+# -----------------------------
+# Test results / coverage
+# -----------------------------
 TestResults/
+coverage/
 coverage-report/
 *.trx
 *.cobertura.xml
 
-# VS / VS Code
+# -----------------------------
+# IDE / Editor
+# -----------------------------
 .vscode/
 .idea/
 *.swp
 
-# Logs
-*.log
+# -----------------------------
+# OS files
+# -----------------------------
+.DS_Store
+Thumbs.db
 
-# Build artifacts in backend (handled by CI/CD)
+# -----------------------------
+# Backend static files
+# -----------------------------
 backend/Resilio.API/wwwroot/*
 !backend/Resilio.API/wwwroot/favicon.svg
 !backend/Resilio.API/wwwroot/icons.svg
-
-# OS
-.DS_Store
-Thumbs.db
+backend/Resilio.API/publish/*
