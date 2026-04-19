@@ -1,126 +1,83 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Resilio.API.Services;
-using Resilio.Core.Interfaces;
-using Resilio.Infrastructure.Data;
-using Resilio.Infrastructure.Repositories;
-using System.Text;
-using Resilio.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
+using Resilio.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+// Add services to the container
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler =
+            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// DI: Infrastructure
-builder.Services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IOtpRepository, OtpRepository>();
-builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
-builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-builder.Services.AddScoped<IVictimProfileRepository, VictimProfileRepository>();
-builder.Services.AddScoped<IVolunteerProfileRepository, VolunteerProfileRepository>();
-builder.Services.AddScoped<IReliefRequestRepository, ReliefRequestRepository>();
-builder.Services.AddScoped<IReliefRequestService, ReliefRequestService>();
-builder.Services.AddScoped<IResourceRepository, ResourceRepository>(); // ← YOUR NEW LINE
+// Health checks
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ResilioDbContext>();
 
-// DI: Services
-builder.Services.AddSingleton<IOtpGenerator, OtpGenerator>();
-builder.Services.AddSingleton<IRefreshTokenGenerator, RefreshTokenGenerator>();
-builder.Services.AddSingleton<IOtpHasher>(sp =>
-{
-    var cfg = sp.GetRequiredService<IConfiguration>();
-    var secret = cfg["Otp:HmacSecret"] 
-        ?? throw new InvalidOperationException("Otp:HmacSecret missing.");
-    return new OtpHasher(secret);
-});
-builder.Services.AddSingleton<ITokenHasher>(sp =>
-{
-    var cfg = sp.GetRequiredService<IConfiguration>();
-    var secret = cfg["TokenHashing:HmacSecret"]
-        ?? throw new InvalidOperationException("TokenHashing:HmacSecret missing.");
-    return new TokenHasher(secret);
-});
-builder.Services.AddSingleton<IJwtTokenService, JwtTokenService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IProfileService, ProfileService>();
-builder.Services.AddScoped<IEmailSender, GmailEmailSender>();
-
-// JWT Auth
-var jwtKey = builder.Configuration["Auth:JwtKey"] 
-    ?? throw new InvalidOperationException("Auth:JwtKey missing.");
-var issuer   = builder.Configuration["Auth:JwtIssuer"]   ?? "Resilio";
-var audience = builder.Configuration["Auth:JwtAudience"] ?? "ResilioClient";
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer           = true,
-            ValidIssuer              = issuer,
-            ValidateAudience         = true,
-            ValidAudience            = audience,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey         = new SymmetricSecurityKey(
-                                           Encoding.UTF8.GetBytes(jwtKey)),
-            ValidateLifetime         = true
-        };
-    });
-
-builder.Services.AddAuthorization();
-
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
-    ?? Array.Empty<string>();
-if (allowedOrigins.Length == 0)
-    throw new InvalidOperationException("Configure Cors:AllowedOrigins (see appsettings or Azure App Settings).");
+// Database connection - Azure SQL / SQL Server
+builder.Services.AddDbContext<ResilioDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("ApiCors", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        var allowedOrigins = builder.Configuration
+            .GetSection("AllowedOrigins")
+            .Get<string[]>() ?? Array.Empty<string>();
+
+        var origins = new List<string> { "http://localhost:5173" };
+        origins.AddRange(allowedOrigins);
+
         policy
-            .WithOrigins(allowedOrigins)
+            .WithOrigins(origins.ToArray())
             .AllowAnyHeader()
-            .AllowAnyMethod());
+            .AllowAnyMethod();
+    });
 });
+
+builder.Services.AddScoped<Resilio.API.Interfaces.IAdminService, Resilio.API.Services.AdminService>();
+builder.Services.AddScoped<Resilio.API.Interfaces.IAuthService, Resilio.API.Services.AuthService>();
+builder.Services.AddScoped<Resilio.API.Interfaces.IDonationService, Resilio.API.Services.DonationService>();
+builder.Services.AddScoped<Resilio.API.Interfaces.IRequestService, Resilio.API.Services.RequestService>();
+builder.Services.AddScoped<Resilio.API.Interfaces.IVolunteerService, Resilio.API.Services.VolunteerService>();
+builder.Services.AddScoped<Resilio.API.Interfaces.IUserService, Resilio.API.Services.UserService>();
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+// Apply migrations automatically only in Development
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<ResilioDbContext>();
+    db.Database.Migrate();
+}
 
-app.UseHttpsRedirection();
+// Configure the HTTP request pipeline
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-app.UseCors("ApiCors");
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
-app.UseAuthentication();
+app.UseCors("AllowFrontend");
+
 app.UseAuthorization();
 
 app.MapControllers();
 
-// Health check endpoint
-app.MapGet("/api/health", () => Results.Ok(new { status = "healthy", app = "Resilio" }));
-
-// Database connection test
-app.MapGet("/api/test-db", async () =>
-{
-    try
-    {
-        var connectionString = builder.Configuration
-            .GetConnectionString("DefaultConnection");
-        using var connection = new Microsoft.Data.SqlClient
-            .SqlConnection(connectionString);
-        await connection.OpenAsync();
-        return Results.Ok(new { 
-            status = "Database connected!", 
-            server = connection.DataSource 
-        });
-    }
-    catch (Exception ex)
-    {
-        return Results.Problem("Database connection failed: " + ex.Message);
-    }
-});
+// Simple health endpoint
+app.MapGet("/health", () => Results.Ok("Healthy"));
 
 app.Run();

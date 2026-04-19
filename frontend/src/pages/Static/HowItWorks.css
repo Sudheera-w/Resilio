@@ -1,0 +1,248 @@
+.staticPage {
+  padding-top: 80px; /* Offset for fixed navbar */
+  background: #f8fafc;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero Section */
+.howItWorks .hero {
+  padding: 100px 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+}
+
+.howItWorks .hero .container {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.heroContent {
+  flex: 1;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.heroContent h1 {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #1e293b;
+  margin-bottom: 24px;
+  letter-spacing: -2px;
+}
+
+.heroContent p {
+  font-size: 20px;
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 500px;
+}
+
+.heroBtns {
+  display: flex;
+  gap: 16px;
+}
+
+.heroBtns button {
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.primaryBtn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+}
+
+.primaryBtn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+}
+
+.secondaryBtn {
+  background: white;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+}
+
+.secondaryBtn:hover {
+  background: #f1f5f9;
+}
+
+.heroImageArea {
+  flex: 1;
+}
+
+.heroImageArea img {
+  width: 100%;
+  max-width: 550px;
+  filter: drop-shadow(0 20px 50px rgba(0,0,0,0.1));
+}
+
+/* Steps Section */
+.stepsSection {
+  padding: 120px 0;
+  background: white;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.sectionHeader h2 {
+  font-size: 40px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.sectionHeader p {
+  font-size: 18px;
+  color: #64748b;
+}
+
+.stepsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.stepCard {
+  background: #f8fafc;
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid #edf2f7;
+  transition: all 0.3s ease;
+}
+
+.stepCard:hover {
+  background: white;
+  border-color: #ef4444;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+  transform: translateY(-10px);
+}
+
+.stepHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.stepNum {
+  font-size: 48px;
+  font-weight: 900;
+  color: #e2e8f0;
+}
+
+.stepIcon {
+  font-size: 32px;
+}
+
+.stepCard h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.stepCard p {
+  color: #64748b;
+  line-height: 1.7;
+}
+
+/* CTA Section */
+.ctaSection {
+  padding: 80px 0 120px;
+}
+
+.ctaCard {
+  background: #1e293b;
+  color: white;
+  padding: 80px;
+  border-radius: 32px;
+  text-align: center;
+}
+
+.ctaCard h2 {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.ctaCard p {
+  font-size: 20px;
+  color: #94a3b8;
+  margin-bottom: 40px;
+}
+
+.ctaBtns {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.ctaBtns button {
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ctaBtns button:first-child {
+  background: #ef4444;
+  color: white;
+  border: none;
+}
+
+.ctaBtns button:last-child {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+}
+
+.ctaBtns button:hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 1000px) {
+  .howItWorks .hero .container {
+    flex-direction: column;
+    text-align: center;
+  }
+  .heroContent p {
+    margin: 0 auto 40px;
+  }
+  .heroBtns {
+    justify-content: center;
+  }
+  .stepsGrid {
+    grid-template-columns: 1fr;
+  }
+}

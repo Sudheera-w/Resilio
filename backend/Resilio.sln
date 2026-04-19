@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resilio.API", "Resilio.API\Resilio.API.csproj", "{59BD20A4-5D7E-483D-A083-A3B00977386A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resilio.API.Tests", "Resilio.API.Tests\Resilio.API.Tests.csproj", "{53BB57EE-5E88-4BB9-BB31-4B7DDE8C3D61}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{59BD20A4-5D7E-483D-A083-A3B00977386A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59BD20A4-5D7E-483D-A083-A3B00977386A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59BD20A4-5D7E-483D-A083-A3B00977386A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59BD20A4-5D7E-483D-A083-A3B00977386A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53BB57EE-5E88-4BB9-BB31-4B7DDE8C3D61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53BB57EE-5E88-4BB9-BB31-4B7DDE8C3D61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53BB57EE-5E88-4BB9-BB31-4B7DDE8C3D61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53BB57EE-5E88-4BB9-BB31-4B7DDE8C3D61}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

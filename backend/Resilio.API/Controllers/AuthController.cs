@@ -1,90 +1,38 @@
 using Microsoft.AspNetCore.Mvc;
-using Resilio.Core.DTOs;
-using Resilio.Core.Interfaces;
+using Resilio.API.DTOs;
+using Resilio.API.Interfaces;
 
 namespace Resilio.API.Controllers;
 
+[Route("api/[controller]")]
 [ApiController]
-[Route("api/auth")]
-public sealed class AuthController : ControllerBase
+public class AuthController : ControllerBase
 {
-    private readonly IAuthService _auth;
+    private readonly IAuthService _authService;
 
-    public AuthController(IAuthService auth) => _auth = auth;
-
-    [HttpPost("start")]
-    public async Task<ActionResult<AuthStartResponse>> Start([FromBody] AuthStartRequest request, CancellationToken ct)
+    public AuthController(IAuthService authService)
     {
-        var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
-        var ua = Request.Headers.UserAgent.ToString();
-
-        try
-        {
-            var result = await _auth.StartAsync(request, ip, ua, ct);
-            return Ok(result);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new ProblemDetails { Title = "Validation error", Detail = ex.Message });
-        }
+        _authService = authService;
     }
 
-    [HttpPost("verify")]
-    public async Task<ActionResult<AuthVerifyResponse>> Verify([FromBody] AuthVerifyRequest request, CancellationToken ct)
+    [HttpPost("send-otp")]
+    public async Task<IActionResult> SendOtp([FromBody] SendOtpRequest request)
     {
-        var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
-        var ua = Request.Headers.UserAgent.ToString();
+        if (string.IsNullOrEmpty(request.Contact)) return BadRequest("Contact is required.");
 
-        try
-        {
-            var result = await _auth.VerifyAsync(request, ip, ua, ct);
-            return Ok(result);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new ProblemDetails { Title = "Validation error", Detail = ex.Message });
-        }
-        catch (UnauthorizedAccessException)
-        {
-            return Unauthorized(new ProblemDetails { Title = "Unauthorized", Detail = "Invalid or expired OTP." });
-        }
+        var code = await _authService.GenerateAndSaveOtpAsync(request.Contact);
+
+        return Ok(new { message = "OTP generated successfully.", mockCode = code });
     }
 
-    [HttpPost("refresh")]
-    public async Task<ActionResult<AuthRefreshResponse>> Refresh([FromBody] AuthRefreshRequest request, CancellationToken ct)
+    [HttpPost("verify-otp")]
+    public async Task<IActionResult> VerifyOtp([FromBody] VerifyOtpRequest request)
     {
-        var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
-        var ua = Request.Headers.UserAgent.ToString();
+        var result = await _authService.VerifyOtpAsync(request.Contact, request.Code);
 
-        try
-        {
-            var result = await _auth.RefreshAsync(request, ip, ua, ct);
-            return Ok(result);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new ProblemDetails { Title = "Validation error", Detail = ex.Message });
-        }
-        catch (UnauthorizedAccessException)
-        {
-            return Unauthorized(new ProblemDetails { Title = "Unauthorized", Detail = "Invalid refresh token." });
-        }
-    }
+        if (!result.IsValid)
+            return BadRequest(new { message = result.Message });
 
-    [HttpPost("logout")]
-    public async Task<IActionResult> Logout([FromBody] AuthLogoutRequest request, CancellationToken ct)
-    {
-        var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
-        var ua = Request.Headers.UserAgent.ToString();
-
-        try
-        {
-            await _auth.LogoutAsync(request, ip, ua, ct);
-            return Ok(new { message = "Logged out." });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new ProblemDetails { Title = "Validation error", Detail = ex.Message });
-        }
+        return Ok(new { message = result.Message });
     }
 }
