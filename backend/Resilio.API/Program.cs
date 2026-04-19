@@ -51,7 +51,7 @@ builder.Services.AddScoped<Resilio.API.Interfaces.IUserService, Resilio.API.Serv
 
 var app = builder.Build();
 
-// Ensure DB schema is applied in development (Azure SQL or local) so writes don't fail due to missing tables.
+// Apply migrations automatically only in Development
 if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
@@ -66,7 +66,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Dev runs on http://localhost:5209; redirecting to HTTPS breaks Vite proxy calls.
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
@@ -74,18 +73,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseCors("AllowFrontend");
 
-// Serve frontend files from wwwroot
-app.UseDefaultFiles();
-app.UseStaticFiles();
-
 app.UseAuthorization();
 
 app.MapControllers();
 
 // Simple health endpoint
 app.MapGet("/health", () => Results.Ok("Healthy"));
-
-// Fallback for React routes like /login, /signup, /dashboard
-app.MapFallbackToFile("index.html");
 
 app.Run();
