@@ -1,0 +1,580 @@
+
+
+
+/* =========================
+   PAGE LAYOUT
+========================= */
+.volunteerPage {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    font-family: 'Times New Roman', Times, serif;
+    padding: 28px 20px;
+}
+
+.pageOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(239, 248, 242, 0.82);
+    backdrop-filter: blur(3px);
+}
+
+.wizardWrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* =========================
+   INTRO CARD
+========================= */
+.introCard {
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(199, 227, 207, 0.95);
+    border-radius: 24px;
+    padding: 28px 24px;
+    box-shadow: 0 16px 40px rgba(29, 78, 52, 0.10);
+}
+
+.miniLabel {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1f6a45;
+    background: #e8f6ee;
+    padding: 8px 12px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+}
+
+.introTitle {
+    font-size: 28px;
+    font-weight: 800;
+    color: #153c2b;
+    line-height: 1.25;
+    margin-bottom: 14px;
+}
+
+.introText {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #4a5d53;
+    margin-bottom: 22px;
+}
+
+.introIcons {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.iconItem {
+    flex: 1;
+    background: #f5fbf7;
+    border: 1px solid #d8eee0;
+    border-radius: 16px;
+    padding: 14px 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #234d38;
+}
+
+.iconEmoji {
+    display: block;
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.introPoints {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.introPoints p {
+    font-size: 13px;
+    color: #486253;
+    line-height: 1.5;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+.wizardCard {
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 24px;
+    border: 1px solid rgba(199, 227, 207, 0.95);
+    box-shadow: 0 18px 42px rgba(29, 78, 52, 0.12);
+    overflow: hidden;
+}
+
+.wizardTopBar {
+    padding: 22px 26px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    border-bottom: 1px solid #e6f1ea;
+    background: linear-gradient(180deg, #f8fdf9 0%, #ffffff 100%);
+}
+
+.topBarLeft {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.topLogo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.wizardTitle {
+    font-size: 26px;
+    font-weight: 800;
+    color: #153c2b;
+    margin-bottom: 4px;
+}
+
+.wizardSubtitle {
+    font-size: 14px;
+    color: #5f7468;
+}
+
+.uxBadge {
+    background: #1f7a4d;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 9px 14px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+.progressRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 18px 24px 0;
+}
+
+.progressChip {
+    min-width: 122px;
+    border-radius: 14px;
+    padding: 10px 14px;
+    border: 1px solid #d8e8dd;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.chipTop {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.chipBottom {
+    font-size: 12px;
+}
+
+.chipComplete {
+    background: #edf9f1;
+    border-color: #b7e0c3;
+    color: #1d6d45;
+}
+
+.chipActive {
+    background: #dff4e6;
+    border-color: #69b384;
+    color: #155a37;
+}
+
+.chipPending {
+    background: #f8faf8;
+    color: #8a9a90;
+}
+
+/* =========================
+   CONTENT
+========================= */
+.wizardContent {
+    padding: 28px 24px 30px;
+    max-width: 640px;
+}
+
+.centeredContent {
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholderText {
+    color: #3e5247;
+    font-size: 16px;
+    text-align: center;
+}
+
+.stepHeading {
+    font-size: 25px;
+    font-weight: 800;
+    color: #153c2b;
+    margin-bottom: 10px;
+}
+
+.sectionDescription {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #617468;
+    margin-bottom: 22px;
+}
+
+.formGroup {
+    margin-bottom: 18px;
+}
+
+.formLabel {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #274736;
+    margin-bottom: 8px;
+}
+
+.formInput,
+.formSelect {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #c7dacd;
+    border-radius: 12px;
+    padding: 0 14px;
+    font-size: 14px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #1f2d25;
+    background: #ffffff;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.formInput:focus,
+.formSelect:focus {
+    border-color: #2f8a58;
+    box-shadow: 0 0 0 4px rgba(47, 138, 88, 0.12);
+}
+
+.formSelect:disabled {
+    background: #f2f5f3;
+    cursor: not-allowed;
+}
+
+.helperText {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #6a7a71;
+    margin-bottom: 18px;
+}
+
+/* =========================
+   CHECKBOXES / RADIOS
+========================= */
+.checkboxGroup,
+.radioGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.checkboxCard,
+.radioCard {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #d8e8dd;
+    background: #f9fcfa;
+    border-radius: 14px;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #234634;
+    transition: 0.2s ease;
+}
+
+.checkboxCard:hover,
+.radioCard:hover {
+    border-color: #9eccae;
+    background: #f2faf5;
+}
+
+.checkboxItem,
+.radioItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: #2b4637;
+}
+
+.inlineOptions {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+/* =========================
+   LOCATION
+========================= */
+.locationBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.locationActionBtn {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #cfe3d5;
+    background: #f7fcf8;
+    color: #1f6f45;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.locationActionBtn:hover {
+    background: #eef8f1;
+}
+
+.activeLocationAction {
+    background: #1f7a4d;
+    color: #ffffff;
+    border-color: #1f7a4d;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.buttonRow {
+    margin-top: 22px;
+}
+
+.dualButtons {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.primaryBtn,
+.secondaryBtn,
+.outlineBtn {
+    height: 48px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Times New Roman', Times, serif;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.primaryBtn {
+    border: none;
+    background: linear-gradient(135deg, #1f7a4d, #2fa05f);
+    color: #ffffff;
+    width: 100%;
+}
+
+.secondaryBtn {
+    border: none;
+    background: #e8f6ee;
+    color: #1d6b44;
+    flex: 1;
+    min-width: 150px;
+}
+
+.outlineBtn {
+    background: #ffffff;
+    border: 1.5px solid #a8c8b2;
+    color: #2b4c3a;
+    flex: 1;
+    min-width: 150px;
+}
+
+.primaryBtn:hover,
+.secondaryBtn:hover,
+.outlineBtn:hover {
+    transform: translateY(-1px);
+    opacity: 0.98;
+}
+
+.linkBtn {
+    background: transparent;
+    border: none;
+    color: #1f7a4d;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+    padding: 0;
+    margin-bottom: 18px;
+    cursor: pointer;
+    text-align: right;
+    width: 100%;
+}
+
+.linkBtn:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   HIGHLIGHT BOX
+========================= */
+.highlightBox {
+    margin-top: 18px;
+    padding: 16px;
+    background: #f7fcf8;
+    border: 1px solid #d8eadf;
+    border-radius: 16px;
+}
+
+.highlightTitle {
+    font-size: 13px;
+    font-weight: 800;
+    color: #1c5f3d;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.smallGrayText {
+    font-size: 12px;
+    color: #66766d;
+    margin-top: 10px;
+    line-height: 1.5;
+}
+
+/* =========================
+   SUCCESS
+========================= */
+.successContent {
+    max-width: 650px;
+}
+
+.successBadge {
+    display: inline-block;
+    background: #e8f6ee;
+    color: #1e6e45;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+}
+
+.successTitle {
+    font-size: 30px;
+    font-weight: 800;
+    color: #153c2b;
+    margin-bottom: 14px;
+}
+
+.successText {
+    font-size: 15px;
+    color: #4c5f55;
+    line-height: 1.8;
+    margin-bottom: 22px;
+}
+
+.successActions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.completionText {
+    font-size: 13px;
+    color: #6b7b72;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+    .wizardWrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .wizardContent {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .volunteerPage {
+        padding: 16px 12px;
+    }
+
+    .wizardTopBar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .wizardTitle {
+        font-size: 22px;
+    }
+
+    .stepHeading {
+        font-size: 22px;
+    }
+
+    .dualButtons,
+    .successActions {
+        flex-direction: column;
+    }
+
+    .primaryBtn,
+    .secondaryBtn,
+    .outlineBtn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .introIcons {
+        flex-direction: column;
+    }
+
+    .wizardContent {
+        padding: 20px 18px 24px;
+    }
+
+    .stepHeading {
+        font-size: 20px;
+    }
+
+    .formInput,
+    .formSelect,
+    .primaryBtn,
+    .secondaryBtn,
+    .outlineBtn,
+    .locationActionBtn {
+        height: 46px;
+    }
+}

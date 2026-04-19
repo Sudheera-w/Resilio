@@ -1,0 +1,485 @@
+/* =========================
+   PAGE LAYOUT
+========================= */
+.donationPage {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    font-family: "Poppins", "Segoe UI", sans-serif;
+    padding: 32px 20px;
+}
+
+.pageOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(239, 246, 255, 0.92), rgba(248, 251, 255, 0.95));
+    backdrop-filter: blur(4px);
+}
+
+.donationWrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+.formCard {
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid #d9e7f5;
+    border-radius: 26px;
+    overflow: hidden;
+    box-shadow: 0 18px 45px rgba(30, 64, 175, 0.10);
+}
+
+.formCardFull {
+    width: 100%;
+}
+
+/* =========================
+   HEADER
+========================= */
+.formHeader {
+    padding: 26px 32px 20px;
+    border-bottom: 1px solid #e6eef8;
+    background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
+}
+
+.formHeaderLeft {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.topLogo {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+}
+
+.formTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #163b6d;
+    margin: 0 0 4px;
+}
+
+.formSubtitle {
+    margin: 0;
+    font-size: 0.98rem;
+    color: #5f7690;
+    line-height: 1.6;
+}
+
+/* =========================
+   FORM BASE
+========================= */
+.donationForm {
+    padding: 32px;
+}
+
+.sectionBlock {
+    margin-bottom: 30px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #edf3fa;
+}
+
+.sectionBlock:last-of-type {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.sectionTitle {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #183b68;
+    margin: 0 0 8px;
+}
+
+.sectionText {
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: #67809a;
+    margin: 0 0 22px;
+}
+
+/* =========================
+   RESOURCE TYPE CARDS
+========================= */
+.resourceGrid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.resourceCard {
+    border: 1px solid #d7e5f3;
+    background: linear-gradient(180deg, #fbfdff 0%, #f4f9ff 100%);
+    border-radius: 20px;
+    padding: 20px 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.22s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 160px;
+    font-family: inherit;
+}
+
+.resourceCard:hover {
+    transform: translateY(-2px);
+    border-color: #93c5fd;
+    box-shadow: 0 10px 24px rgba(59, 130, 246, 0.12);
+    background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+}
+
+.resourceCardActive {
+    border-color: #2563eb;
+    background: linear-gradient(180deg, #eff6ff 0%, #e8f1ff 100%);
+    box-shadow: 0 14px 28px rgba(37, 99, 235, 0.16);
+}
+
+.resourceIcon {
+    font-size: 1.9rem;
+    line-height: 1;
+}
+
+.resourceName {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #163d6b;
+}
+
+.resourceDesc {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: #66809a;
+}
+
+/* =========================
+   FORM INPUTS
+========================= */
+.formGroup {
+    margin-bottom: 18px;
+    width: 100%;
+}
+
+.formLabel {
+    display: block;
+    font-size: 0.96rem;
+    font-weight: 600;
+    color: #274c77;
+    margin-bottom: 8px;
+}
+
+.formInput,
+.formSelect {
+    width: 100%;
+    height: 52px;
+    border: 1px solid #cddceb;
+    border-radius: 14px;
+    background: #ffffff;
+    padding: 0 16px;
+    font-size: 0.96rem;
+    font-family: inherit;
+    color: #1f2f40;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.formInput:focus,
+.formSelect:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+.formInput::placeholder {
+    color: #95a6b8;
+}
+
+.formSelect {
+    appearance: none;
+    cursor: pointer;
+}
+
+.formRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.contactGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.contactRow {
+    display: grid;
+    grid-template-columns: 1fr 160px;
+    gap: 16px;
+    align-items: end;
+}
+
+.smallField {
+    min-width: 140px;
+}
+
+/* =========================
+   TOGGLE / CHECKBOX
+========================= */
+.toggleRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f5f9ff;
+    border: 1px solid #d8e7f6;
+    border-radius: 16px;
+    padding: 15px 16px;
+    margin-bottom: 18px;
+    font-size: 0.96rem;
+    font-weight: 500;
+    color: #284b74;
+}
+
+.toggleRow input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+/* =========================
+   LOCATION BUTTONS
+========================= */
+.locationActions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.locationBtn {
+    height: 46px;
+    padding: 0 18px;
+    border-radius: 12px;
+    border: 1px solid #cfe1f1;
+    background: #f8fbff;
+    color: #245287;
+    font-size: 0.94rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.locationBtn:hover {
+    background: #eef6ff;
+    border-color: #9fc5ee;
+}
+
+.locationBtnActive {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 8px 18px rgba(37, 99, 235, 0.20);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.formFooter,
+.successActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.primaryBtn,
+.secondaryBtn {
+    min-width: 190px;
+    height: 52px;
+    border-radius: 14px;
+    font-size: 0.96rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.primaryBtn {
+    border: none;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.26);
+}
+
+.primaryBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.36);
+}
+
+.secondaryBtn {
+    border: 1.5px solid #60a5fa;
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.secondaryBtn:hover {
+    background: #dbeafe;
+    transform: translateY(-1px);
+}
+
+/* =========================
+   SUCCESS CARD
+========================= */
+.successWrapper {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.successCard {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid #d7e6f5;
+    border-radius: 28px;
+    padding: 36px 32px;
+    box-shadow: 0 18px 42px rgba(30, 64, 175, 0.12);
+    position: relative;
+    z-index: 2;
+}
+
+.successBadge {
+    display: inline-block;
+    background: #eaf4ff;
+    color: #1f5fae;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+}
+
+.successTitle {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #14375f;
+    margin: 0 0 12px;
+}
+
+.successText {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #5f7389;
+    margin: 0 0 22px;
+}
+
+.successSummary {
+    background: #f8fbff;
+    border: 1px solid #dce9f6;
+    border-radius: 18px;
+    padding: 18px 16px;
+    margin-bottom: 24px;
+}
+
+.successSummary p {
+    font-size: 0.95rem;
+    color: #325273;
+    line-height: 1.8;
+    margin: 0 0 6px;
+}
+
+.successSummary p:last-child {
+    margin-bottom: 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1100px) {
+    .resourceGrid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .resourceGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .formRow,
+    .contactRow {
+        grid-template-columns: 1fr;
+    }
+
+    .smallField {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .donationPage {
+        padding: 16px 12px;
+    }
+
+    .formHeader {
+        padding: 22px 18px 16px;
+    }
+
+    .donationForm {
+        padding: 22px 18px;
+    }
+
+    .formTitle {
+        font-size: 1.65rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.35rem;
+    }
+
+    .formFooter,
+    .successActions,
+    .locationActions {
+        flex-direction: column;
+    }
+
+    .primaryBtn,
+    .secondaryBtn,
+    .locationBtn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 560px) {
+    .resourceGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .successTitle {
+        font-size: 1.6rem;
+    }
+
+    .successCard {
+        padding: 28px 18px;
+    }
+
+    .topLogo {
+        width: 46px;
+        height: 46px;
+    }
+}

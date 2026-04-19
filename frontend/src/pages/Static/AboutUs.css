@@ -1,0 +1,152 @@
+.aboutHero {
+  height: 60vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.aboutHeroImage {
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+}
+
+.aboutHeroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.4) 100%);
+}
+
+.aboutHeroText {
+  position: relative;
+  z-index: 10;
+  max-width: 700px;
+}
+
+.aboutHeroText h1 {
+  font-size: 64px;
+  font-weight: 800;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -2px;
+}
+
+.aboutHeroText p {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
+
+/* Mission Section */
+.mission {
+  padding: 120px 0;
+  background: white;
+}
+
+.missionGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.missionText h2 {
+  font-size: 40px;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 24px;
+}
+
+.missionText p {
+  font-size: 18px;
+  color: #64748b;
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.missionStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.statCard {
+  background: #f8fafc;
+  padding: 32px;
+  border-radius: 20px;
+  text-align: center;
+  border: 1px solid #edf2f7;
+}
+
+.statCard h3 {
+  font-size: 36px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.statCard p {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Values Section */
+.values {
+  padding: 100px 0 140px;
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.valueCard {
+  background: white;
+  padding: 48px;
+  border-radius: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.valueCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.valueIcon {
+  font-size: 40px;
+  margin-bottom: 24px;
+}
+
+.valueCard h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.valueCard p {
+  color: #64748b;
+  line-height: 1.7;
+}
+
+@media (max-width: 1000px) {
+  .missionGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .aboutHeroText h1 {
+    font-size: 40px;
+  }
+  .valuesGrid {
+    grid-template-columns: 1fr;
+  }
+}

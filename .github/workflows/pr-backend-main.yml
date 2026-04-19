@@ -1,0 +1,35 @@
+name: PR Backend Validation - Main
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/pr-backend-main.yml'
+
+jobs:
+  backend-validate-main:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore backend
+        working-directory: ./backend
+        run: dotnet restore Resilio.sln
+
+      - name: Build backend
+        working-directory: ./backend
+        run: dotnet build Resilio.sln --configuration Release --no-restore
+
+      # Uncomment only if you already have tests
+      # - name: Run backend tests
+      #   working-directory: ./backend
+      #   run: dotnet test Resilio.sln --configuration Release --no-build
